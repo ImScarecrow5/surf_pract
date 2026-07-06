@@ -1,4 +1,4 @@
-const API_BASE = 'http://198.18.0.1:3000/v1';
+const API_BASE = 'http://localhost:3000/v1';
 
 class ApiService {
   constructor() {
