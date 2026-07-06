@@ -1,0 +1,876 @@
+﻿openapi: 3.0.3
+info:
+  title: Climbing Gym API
+  description: API для мобильного приложения скалодрома "Вертикаль"
+  version: 1.0.0
+  contact:
+    name: Вертикаль Climbing Gym
+
+servers:
+  - url: https://api.vertical-climb.example.com/v1
+    description: Production server
+  - url: https://staging-api.vertical-climb.example.com/v1
+    description: Staging server
+
+tags:
+  - name: Auth
+    description: Аутентификация и регистрация
+  - name: Slots
+    description: Слоты тренировок
+  - name: Bookings
+    description: Бронирования
+  - name: Reference Data
+    description: Справочные данные (зоны, инструкторы, снаряжение)
+  - name: Profile
+    description: Профиль клиента
+
+paths:
+  /auth/request-code:
+    post:
+      tags:
+        - Auth
+      summary: Запросить код подтверждения
+      description: Отправляет SMS-код на указанный номер телефона для регистрации или входа
+      operationId: requestVerificationCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+              properties:
+                phone:
+                  type: string
+                  description: Номер телефона в формате +7XXXXXXXXXX
+                  example: "+79990001234"
+      responses:
+        '200':
+          description: Код успешно отправлен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Код подтверждения отправлен"
+                  expiresIn:
+                    type: integer
+                    description: Время жизни кода в секундах
+                    example: 300
+        '400':
+          description: Неверный формат номера телефона
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Слишком много попыток
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/verify:
+    post:
+      tags:
+        - Auth
+      summary: Подтвердить код и войти
+      description: Проверяет SMS-код и возвращает токен доступа
+      operationId: verifyCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - code
+              properties:
+                phone:
+                  type: string
+                  description: Номер телефона
+                  example: "+79990001234"
+                code:
+                  type: string
+                  description: SMS-код из 4-6 цифр
+                  example: "1234"
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+              example:
+                accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                refreshToken: "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4..."
+                expiresIn: 600
+                client:
+                  id: "550e8400-e29b-41d4-a716-446655440000"
+                  phone: "+79990001234"
+                  name: "Иван"
+                  level: "beginner"
+                  createdAt: "2024-01-15T10:00:00Z"
+        '400':
+          description: Неверный код или истёк
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /slots:
+    get:
+      tags:
+        - Slots
+      summary: Получить доступные слоты
+      description: |
+        Возвращает список доступных слотов тренировок.
+        - По умолчанию показывает слоты на ближайшие 7 дней
+        - Слоты с 0 свободных мест скрыты
+        - Для новичков отображаются только слоты болдеринга
+      operationId: getSlots
+      parameters:
+        - name: zone
+          in: query
+          description: Фильтр по зоне
+          schema:
+            type: string
+            enum: [boulder, rope, all]
+            default: all
+        - name: date
+          in: query
+          description: Фильтр по дате (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: dateFrom
+          in: query
+          description: Начальная дата диапазона
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          description: Конечная дата диапазона
+          schema:
+            type: string
+            format: date
+        - name: instructorId
+          in: query
+          description: Фильтр по инструктору
+          schema:
+            type: string
+            format: uuid
+        - name: onlyAvailable
+          in: query
+          description: Показать только слоты со свободными местами
+          schema:
+            type: boolean
+            default: true
+        - name: page
+          in: query
+          description: Номер страницы
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Количество элементов на странице
+          schema:
+            type: integer
+            default: 20
+            maximum: 50
+      responses:
+        '200':
+          description: Список слотов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlotsResponse'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /slots/{slotId}:
+    get:
+      tags:
+        - Slots
+      summary: Получить детали слота
+      operationId: getSlotById
+      parameters:
+        - name: slotId
+          in: path
+          required: true
+          description: ID слота
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Детали слота
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlotDetail'
+        '404':
+          description: Слот не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '410':
+          description: Слот отменён скалодромом
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /zones:
+    get:
+      tags:
+        - Reference Data
+      summary: Получить зоны тренировок
+      description: Возвращает список зон (болдеринг, трассы с верёвкой)
+      operationId: getZones
+      responses:
+        '200':
+          description: Список зон
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Zone'
+
+  /instructors:
+    get:
+      tags:
+        - Reference Data
+      summary: Получить инструкторов
+      description: Возвращает список инструкторов с рейтингами
+      operationId: getInstructors
+      responses:
+        '200':
+          description: Список инструкторов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Instructor'
+
+  /equipment:
+    get:
+      tags:
+        - Reference Data
+      summary: Получить снаряжение напрокат
+      description: Возвращает список снаряжения доступного для аренды
+      operationId: getEquipment
+      responses:
+        '200':
+          description: Список снаряжения
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Equipment'
+
+  /bookings:
+    get:
+      tags:
+        - Bookings
+      summary: Получить бронирования пользователя
+      description: Возвращает список бронирований текущего пользователя
+      operationId: getBookings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Фильтр по статусу
+          schema:
+            type: string
+            enum: [confirmed, cancelled_by_client_early, cancelled_by_client_late, cancelled_by_gym, all]
+            default: all
+        - name: upcoming
+          in: query
+          description: Только предстоящие бронирования
+          schema:
+            type: boolean
+            default: false
+        - name: past
+          in: query
+          description: Только прошедшие бронирования
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Список бронирований
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingsResponse'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Bookings
+      summary: Создать бронирование
+      description: |
+        Создаёт новое бронирование на слот тренировки.
+        Бронирование должно быть подтверждено в течение 15 минут.
+      operationId: createBooking
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - slotId
+                - equipmentType
+              properties:
+                slotId:
+                  type: string
+                  format: uuid
+                  description: ID слота
+                equipmentType:
+                  type: string
+                  enum: [own, rental]
+                  description: "Тип снаряжения: своё или напрокат"
+                equipmentId:
+                  type: string
+                  format: uuid
+                  description: ID снаряжения (если equipmentType = rental)
+      responses:
+        '201':
+          description: Бронирование создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingCreated'
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Нет свободных мест
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '410':
+          description: Слот отменён скалодромом
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /bookings/{bookingId}:
+    get:
+      tags:
+        - Bookings
+      summary: Получить детали бронирования
+      operationId: getBookingById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          description: ID бронирования
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Детали бронирования
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Бронирование не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /bookings/{bookingId}/cancel:
+    patch:
+      tags:
+        - Bookings
+      summary: Отменить бронирование
+      description: |
+        Отменяет бронирование.
+        - При отмене ≥2ч до старта — бесплатно
+        - При отмене <2ч до старта — штраф 10%
+      operationId: cancelBooking
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          description: ID бронирования
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Бронирование отменено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '400':
+          description: Невозможно отменить (время вышло или нельзя отменить)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Бронирование не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: Получить профиль пользователя
+      operationId: getProfile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Данные профиля
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Profile
+      summary: Обновить профиль
+      operationId: updateProfile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Имя клиента
+                  maxLength: 100
+                level:
+                  type: string
+                  enum: [beginner, intermediate, advanced]
+                  description: Уровень клиента (новичок/опытный)
+      responses:
+        '200':
+          description: Профиль обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT токен доступа
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Код ошибки
+          example: "slot_unavailable"
+        message:
+          type: string
+          description: Сообщение об ошибке
+          example: "Нет свободных мест"
+        details:
+          type: object
+          description: Дополнительные данные об ошибке
+
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: JWT токен доступа
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        refreshToken:
+          type: string
+          description: Токен для обновления
+          example: "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4..."
+        expiresIn:
+          type: integer
+          description: Время жизни access токена в секундах
+          example: 600
+        client:
+          $ref: '#/components/schemas/Client'
+
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID клиента
+        phone:
+          type: string
+          description: Номер телефона
+        name:
+          type: string
+          description: Имя клиента
+        level:
+          type: string
+          enum: [beginner, intermediate, advanced]
+          description: Уровень (новичок/опытный)
+        createdAt:
+          type: string
+          format: date-time
+
+    Zone:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Название зоны
+          example: "Болдеринг"
+        description:
+          type: string
+          description: Описание зоны
+        maxCapacity:
+          type: integer
+          description: Максимальное количество человек
+          example: 8
+        durationMinutes:
+          type: integer
+          description: Продолжительность тренировки в минутах
+          example: 90
+
+    Instructor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Имя инструктора
+          example: "Иван Петров"
+        photoUrl:
+          type: string
+          description: URL фото инструктора
+        rating:
+          type: number
+          format: float
+          description: Рейтинг инструктора
+          example: 4.8
+
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Название снаряжения
+          example: "Скальники"
+        type:
+          type: string
+          description: Тип снаряжения
+          example: "shoes"
+        availableCount:
+          type: integer
+          description: Количество доступных единиц
+          example: 10
+        pricePerSlot:
+          type: number
+          format: decimal
+          description: Цена за одну единицу на один слот
+          example: 200.00
+
+    Slot:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        zoneId:
+          type: string
+          format: uuid
+        zone:
+          $ref: '#/components/schemas/Zone'
+        instructorId:
+          type: string
+          format: uuid
+        instructor:
+          $ref: '#/components/schemas/Instructor'
+        startTime:
+          type: string
+          format: date-time
+          description: Время начала тренировки
+        endTime:
+          type: string
+          format: date-time
+          description: Время окончания тренировки
+        totalPlaces:
+          type: integer
+          description: Всего мест
+          example: 8
+        freePlaces:
+          type: integer
+          description: Свободных мест
+          example: 5
+        price:
+          type: number
+          format: decimal
+          description: Базовая цена тренировки
+          example: 1500.00
+        status:
+          type: string
+          enum: [available, cancelled]
+          description: Статус слота
+
+    SlotDetail:
+      allOf:
+        - $ref: '#/components/schemas/Slot'
+        - type: object
+          properties:
+            equipment:
+              type: array
+              items:
+                $ref: '#/components/schemas/Equipment'
+              description: Доступное снаряжение для аренды
+
+    SlotsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Slot'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientId:
+          type: string
+          format: uuid
+        slotId:
+          type: string
+          format: uuid
+        slot:
+          $ref: '#/components/schemas/Slot'
+        equipmentType:
+          type: string
+          enum: [own, rental]
+          description: Тип снаряжения
+        equipmentId:
+          type: string
+          format: uuid
+          description: ID арендованного снаряжения
+        equipment:
+          $ref: '#/components/schemas/Equipment'
+          description: Арендованное снаряжение
+        price:
+          type: number
+          format: decimal
+          description: Итоговая цена
+        status:
+          type: string
+          enum: [confirmed, cancelled_by_client_early, cancelled_by_client_late, cancelled_by_gym]
+          description: Статус бронирования
+        cancellationType:
+          type: string
+          enum: [early, late, by_gym]
+          description: Тип отмены (бесплатная/штрафная/скалодром)
+          nullable: true
+        cancellationReason:
+          type: string
+          description: Причина отмены (для cancelled_by_gym)
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        cancellationPenalty:
+          type: number
+          format: decimal
+          description: Сумма штрафа (для поздней отмены)
+          nullable: true
+
+    BookingCreated:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [confirmed]
+          example: "confirmed"
+        price:
+          type: number
+          format: decimal
+          example: 1500.00
+        expiresAt:
+          type: string
+          format: date-time
+          description: Время до которого нужно подтвердить бронирование
+
+    BookingsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 45
+        totalPages:
+          type: integer
+          example: 3
+
+  responses:
+    UnauthorizedError:
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "unauthorized"
+            message: "Требуется авторизация"
+
+    NotFoundError:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "not_found"
+            message: "Ресурс не найден"
+
+    InternalServerError:
+      description: Внутренняя ошибка сервера
+      content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "internal_error"
+                message: "Внутренняя ошибка сервера"

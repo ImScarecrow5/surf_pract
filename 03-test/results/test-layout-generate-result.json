@@ -1,0 +1,283 @@
+{
+  "componentId": "CARD-SLOT",
+  "componentName": "Карточка слота тренировки",
+  "description": "Проверки верстки и макета карточки",
+  "generatedAt": "2025-07-06T10:33:00Z",
+  "version": "1.0.0",
+  "layoutType": ["flex", "column"],
+  "checks": {
+    "container": [
+      {
+        "id": 1,
+        "property": "display",
+        "cssProperty": "display",
+        "expectedValue": "flex",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 2,
+        "property": "flex-direction",
+        "cssProperty": "flex-direction",
+        "expectedValue": "column",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 3,
+        "property": "max-width",
+        "cssProperty": "max-width",
+        "expectedValue": "100%",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 4,
+        "property": "padding",
+        "cssProperty": "padding",
+        "expectedValue": "16px",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 5,
+        "property": "border-radius",
+        "cssProperty": "border-radius",
+        "expectedValue": "12px",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 6,
+        "property": "background-color",
+        "cssProperty": "background-color",
+        "expectedValue": "#FFFFFF",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 7,
+        "property": "box-shadow",
+        "cssProperty": "box-shadow",
+        "expectedValue": "0 2px 8px rgba(0,0,0,0.08)",
+        "selector": ".card-slot",
+        "priority": "medium",
+        "method": "computed"
+      }
+    ],
+    "gridFlex": [
+      {
+        "id": 1,
+        "property": "justify-content",
+        "cssProperty": "justify-content",
+        "expectedValue": "space-between",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 2,
+        "property": "align-items",
+        "cssProperty": "align-items",
+        "expectedValue": "center",
+        "selector": ".card-slot",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 3,
+        "property": "gap",
+        "cssProperty": "gap",
+        "expectedValue": "12px",
+        "selector": ".card-slot",
+        "priority": "high",
+        "method": "computed"
+      }
+    ],
+    "spacing": [
+      {
+        "id": 1,
+        "element": ".card-header",
+        "property": "margin-bottom",
+        "cssProperty": "margin-bottom",
+        "expectedValue": "8px",
+        "selector": ".card-header",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 2,
+        "element": ".card-info",
+        "property": "margin-bottom",
+        "cssProperty": "margin-bottom",
+        "expectedValue": "12px",
+        "selector": ".card-info",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 3,
+        "element": ".card-actions",
+        "property": "margin-top",
+        "cssProperty": "margin-top",
+        "expectedValue": "16px",
+        "selector": ".card-actions",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 4,
+        "element": ".zone-badge",
+        "property": "margin-right",
+        "cssProperty": "margin-right",
+        "expectedValue": "8px",
+        "selector": ".zone-badge",
+        "priority": "low",
+        "method": "computed"
+      }
+    ],
+    "sizes": [
+      {
+        "id": 1,
+        "element": ".card-slot",
+        "property": "min-height",
+        "cssProperty": "min-height",
+        "expectedValue": "120px",
+        "selector": ".card-slot",
+        "priority": "low",
+        "method": "computed"
+      },
+      {
+        "id": 2,
+        "element": ".zone-badge",
+        "property": "height",
+        "cssProperty": "height",
+        "expectedValue": "24px",
+        "selector": ".zone-badge",
+        "priority": "low",
+        "method": "computed"
+      },
+      {
+        "id": 3,
+        "element": ".instructor-avatar",
+        "property": "width",
+        "cssProperty": "width",
+        "expectedValue": "40px",
+        "selector": ".instructor-avatar",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 4,
+        "element": ".instructor-avatar",
+        "property": "height",
+        "cssProperty": "height",
+        "expectedValue": "40px",
+        "selector": ".instructor-avatar",
+        "priority": "medium",
+        "method": "computed"
+      }
+    ],
+    "responsiveness": [
+      {
+        "breakpoint": 320,
+        "checks": [
+          {
+            "element": ".card-slot",
+            "property": "padding",
+            "expectedValue": "12px",
+            "status": "pending"
+          },
+          {
+            "element": ".card-title",
+            "property": "font-size",
+            "expectedValue": "16px",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "breakpoint": 768,
+        "checks": [
+          {
+            "element": ".card-slot",
+            "property": "padding",
+            "expectedValue": "16px",
+            "status": "pending"
+          },
+          {
+            "element": ".card-slot",
+            "property": "max-width",
+            "expectedValue": "100%",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "breakpoint": 1024,
+        "checks": [
+          {
+            "element": ".card-slot",
+            "property": "padding",
+            "expectedValue": "20px",
+            "status": "pending"
+          }
+        ]
+      }
+    ],
+    "visualStates": [
+      {
+        "element": ".card-slot",
+        "state": "default",
+        "description": "Карточка в обычном состоянии",
+        "properties": {
+          "background": "#FFFFFF"
+        }
+      },
+      {
+        "element": ".card-slot",
+        "state": "hover",
+        "description": "Карточка при наведении",
+        "properties": {
+          "box-shadow": "0 4px 12px rgba(0,0,0,0.12)",
+          "transform": "translateY(-2px)"
+        }
+      },
+      {
+        "element": ".card-slot",
+        "state": "active",
+        "description": "Карточка при нажатии",
+        "properties": {
+          "transform": "translateY(0)"
+        }
+      },
+      {
+        "element": ".card-slot",
+        "state": "disabled",
+        "description": "Карточка в отключенном состоянии",
+        "properties": {
+          "opacity": "0.5"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "totalChecks": 28,
+    "highCount": 10,
+    "mediumCount": 9,
+    "lowCount": 9,
+    "breakpoints": [320, 768, 1024],
+    "spacingSystem": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px"
+    }
+  }
+}

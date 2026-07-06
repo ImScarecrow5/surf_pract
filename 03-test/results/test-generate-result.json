@@ -1,0 +1,252 @@
+{
+  "screenId": "SCR-01",
+  "screenName": "Экран авторизации",
+  "description": "Визуальные проверки соответствия макету",
+  "generatedAt": "2025-07-06T10:33:00Z",
+  "version": "1.0.0",
+  "checks": {
+    "positioning": [
+      {
+        "id": 1,
+        "element": ".logo",
+        "description": "Отступ сверху 48px от начала экрана",
+        "cssProperty": "margin-top",
+        "expectedValue": "48px",
+        "selector": ".logo",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 2,
+        "element": ".logo",
+        "description": "Отцентрирован по горизонтали",
+        "cssProperty": "margin-left",
+        "expectedValue": "auto",
+        "selector": ".logo",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 3,
+        "element": ".header",
+        "description": "Отступ от логотипа 24px",
+        "cssProperty": "margin-top",
+        "expectedValue": "24px",
+        "selector": ".header",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 4,
+        "element": ".phone-input",
+        "description": "Отступ от заголовка 32px",
+        "cssProperty": "margin-top",
+        "expectedValue": "32px",
+        "selector": ".phone-input",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 5,
+        "element": ".phone-input",
+        "description": "Ширина 100% с учетом padding",
+        "cssProperty": "width",
+        "expectedValue": "calc(100% - 32px)",
+        "selector": ".phone-input",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 6,
+        "element": ".submit-btn",
+        "description": "Отступ от поля ввода 16px",
+        "cssProperty": "margin-top",
+        "expectedValue": "16px",
+        "selector": ".submit-btn",
+        "priority": "medium",
+        "method": "computed"
+      },
+      {
+        "id": 7,
+        "element": ".submit-btn",
+        "description": "Отцентрирован по горизонтали",
+        "cssProperty": "margin-left",
+        "expectedValue": "auto",
+        "selector": ".submit-btn",
+        "priority": "high",
+        "method": "computed"
+      },
+      {
+        "id": 8,
+        "element": ".footer-links",
+        "description": "Отступ от кнопки 24px",
+        "cssProperty": "margin-top",
+        "expectedValue": "24px",
+        "selector": ".footer-links",
+        "priority": "low",
+        "method": "computed"
+      }
+    ],
+    "stylesAndColors": [
+      {
+        "id": 1,
+        "property": "background-color",
+        "element": "body",
+        "expectedValue": "#F5F5F5",
+        "selector": "body",
+        "priority": "high"
+      },
+      {
+        "id": 2,
+        "property": "background-color",
+        "element": ".submit-btn",
+        "expectedValue": "#FF6B35",
+        "selector": ".submit-btn",
+        "priority": "high"
+      },
+      {
+        "id": 3,
+        "property": "color",
+        "element": ".submit-btn",
+        "expectedValue": "#FFFFFF",
+        "selector": ".submit-btn",
+        "priority": "high"
+      },
+      {
+        "id": 4,
+        "property": "border",
+        "element": ".phone-input",
+        "expectedValue": "1px solid #E0E0E0",
+        "selector": ".phone-input",
+        "priority": "medium"
+      },
+      {
+        "id": 5,
+        "property": "border-radius",
+        "element": ".phone-input",
+        "expectedValue": "8px",
+        "selector": ".phone-input",
+        "priority": "medium"
+      },
+      {
+        "id": 6,
+        "property": "color",
+        "element": ".header",
+        "expectedValue": "#212121",
+        "selector": ".header",
+        "priority": "high"
+      },
+      {
+        "id": 7,
+        "property": "font-size",
+        "element": ".header",
+        "expectedValue": "24px",
+        "selector": ".header",
+        "priority": "high"
+      },
+      {
+        "id": 8,
+        "property": "font-weight",
+        "element": ".header",
+        "expectedValue": "600",
+        "selector": ".header",
+        "priority": "medium"
+      }
+    ],
+    "responsiveness": [
+      {
+        "breakpoint": 320,
+        "checks": [
+          {
+            "description": "Логотип не обрезан",
+            "element": ".logo",
+            "status": "pending"
+          },
+          {
+            "description": "Кнопка занимает всю ширину",
+            "element": ".submit-btn",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "breakpoint": 768,
+        "checks": [
+          {
+            "description": "Отступы по бокам 24px",
+            "element": ".container",
+            "status": "pending"
+          }
+        ]
+      },
+      {
+        "breakpoint": 1024,
+        "checks": [
+          {
+            "description": "Максимальная ширина контента 400px",
+            "element": ".content",
+            "status": "pending"
+          }
+        ]
+      }
+    ],
+    "states": [
+      {
+        "element": ".submit-btn",
+        "state": "default",
+        "description": "Кнопка в обычном состоянии",
+        "properties": {
+          "background": "#FF6B35"
+        }
+      },
+      {
+        "element": ".submit-btn",
+        "state": "hover",
+        "description": "Кнопка при наведении",
+        "properties": {
+          "background": "#E55A2B"
+        }
+      },
+      {
+        "element": ".submit-btn",
+        "state": "active",
+        "description": "Кнопка при нажатии",
+        "properties": {
+          "background": "#CC4E20"
+        }
+      },
+      {
+        "element": ".submit-btn",
+        "state": "disabled",
+        "description": "Кнопка в отключенном состоянии",
+        "properties": {
+          "background": "#BDBDBD",
+          "opacity": "0.6"
+        }
+      },
+      {
+        "element": ".phone-input",
+        "state": "focus",
+        "description": "Поле в фокусе",
+        "properties": {
+          "border": "2px solid #FF6B35"
+        }
+      },
+      {
+        "element": ".phone-input",
+        "state": "error",
+        "description": "Поле с ошибкой",
+        "properties": {
+          "border": "1px solid #F44336"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "totalChecks": 30,
+    "highCount": 12,
+    "mediumCount": 10,
+    "lowCount": 8,
+    "breakpoints": [320, 768, 1024]
+  }
+}

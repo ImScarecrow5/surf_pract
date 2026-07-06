@@ -1,0 +1,112 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-soft);
+  padding: var(--space-md);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-canvas);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xxl);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.auth-logo-text {
+  font: var(--text-title-lg);
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+.auth-title {
+  font: var(--text-title-lg);
+  text-align: center;
+  margin-bottom: var(--space-xs);
+}
+
+.auth-subtitle {
+  font: var(--text-body-md);
+  color: var(--color-muted);
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.auth-code-sent {
+  font: var(--text-body-md);
+  color: var(--color-muted);
+  text-align: center;
+  padding: var(--space-sm);
+  background: var(--color-surface-soft);
+  border-radius: var(--radius-sm);
+}
+
+.auth-dev-code {
+  font: var(--text-body-md);
+  color: var(--color-success);
+  text-align: center;
+  padding: var(--space-sm);
+  background: #e8f5e9;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-success-border);
+}
+
+.auth-dev-code strong {
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.auth-terms {
+  font: var(--text-caption);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.auth-terms a {
+  color: var(--color-link);
+}
+
+.auth-back {
+  background: none;
+  border: none;
+  color: var(--color-link);
+  font: var(--text-body-md);
+  cursor: pointer;
+  padding: var(--space-xs);
+}
+
+.auth-back:hover {
+  text-decoration: underline;
+}
+
+.auth-admin-hint {
+  background: #fff3e0;
+  border: 1px solid #ffb74d;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #e65100;
+}
+
+.auth-admin-hint p {
+  margin: 4px 0;
+}

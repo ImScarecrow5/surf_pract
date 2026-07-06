@@ -1,0 +1,105 @@
+.booking-detail-page {
+  min-height: 100vh;
+  background: var(--color-surface-soft);
+}
+
+.booking-detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-canvas);
+}
+
+.booking-detail-header h1 {
+  font: var(--text-title-md);
+  margin: 0;
+}
+
+.booking-detail-content {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.booking-detail-loading, .booking-detail-error {
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.booking-status {
+  margin-bottom: var(--space-md);
+}
+
+.booking-detail-card h2 {
+  font: var(--text-title-lg);
+  margin-bottom: var(--space-xs);
+}
+
+.booking-datetime {
+  font: var(--text-body-md);
+  color: var(--color-muted);
+  margin-bottom: var(--space-md);
+}
+
+.booking-instructor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.instructor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--text-label-md);
+}
+
+.booking-details {
+  padding-top: var(--space-md);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  font: var(--text-body-md);
+}
+
+.detail-row.total {
+  font: var(--text-label-md);
+  border-top: 1px solid var(--color-hairline);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+}
+
+.detail-row.penalty {
+  color: var(--color-error);
+}
+
+/* Cancel Confirm */
+.cancel-confirm {
+  text-align: center;
+}
+
+.cancel-penalty {
+  color: var(--color-error);
+  font: var(--text-caption);
+  margin: var(--space-sm) 0;
+}
+
+.cancel-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-top: var(--space-md);
+}

@@ -1,0 +1,242 @@
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-soft);
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  background: var(--color-canvas);
+  border-bottom: 1px solid var(--color-hairline);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.home-header h1 {
+  font: var(--text-title-md);
+  margin: 0;
+}
+
+.home-content {
+  flex: 1;
+  padding: var(--space-md);
+  padding-bottom: 80px;
+}
+
+/* Loading Skeleton */
+.home-loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.skeleton-card {
+  height: 100px;
+  background: linear-gradient(90deg, var(--color-surface-soft) 25%, var(--color-surface-strong) 50%, var(--color-surface-soft) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Error & Empty */
+.home-error, .home-empty {
+  text-align: center;
+  padding: var(--space-xxl);
+}
+
+.home-error p, .home-empty p {
+  color: var(--color-muted);
+  margin-bottom: var(--space-md);
+}
+
+/* Slots */
+.slots-group {
+  margin-bottom: var(--space-lg);
+}
+
+.slots-group-title {
+  font: var(--text-label-md);
+  color: var(--color-ink);
+  margin-bottom: var(--space-sm);
+}
+
+.slots-list, .bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.slot-card {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.slot-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  padding-right: var(--space-md);
+  border-right: 1px solid var(--color-hairline);
+}
+
+.slot-date {
+  font: var(--text-caption);
+  color: var(--color-muted);
+}
+
+.slot-hours {
+  font: var(--text-title-sm);
+  color: var(--color-ink);
+}
+
+.slot-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.slot-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font: var(--text-label-md);
+}
+
+.slot-instructor {
+  font: var(--text-body-md);
+  color: var(--color-muted);
+}
+
+.slot-rating {
+  color: var(--color-warning);
+  margin-left: var(--space-xs);
+}
+
+.slot-places {
+  display: flex;
+  justify-content: space-between;
+  font: var(--text-body-md);
+  color: var(--color-body);
+}
+
+.places-warning {
+  color: var(--color-warning);
+}
+
+.slot-price {
+  font: var(--text-label-md);
+  color: var(--color-ink);
+}
+
+/* Bookings */
+.booking-card {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.booking-card.cancelled_by_client_early,
+.booking-card.cancelled_by_client_late,
+.booking-card.cancelled_by_gym {
+  opacity: 0.7;
+}
+
+.booking-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  padding-right: var(--space-md);
+  border-right: 1px solid var(--color-hairline);
+}
+
+.booking-date {
+  font: var(--text-caption);
+  color: var(--color-muted);
+}
+
+.booking-hours {
+  font: var(--text-title-sm);
+  color: var(--color-ink);
+}
+
+.booking-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.booking-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font: var(--text-label-md);
+}
+
+.booking-instructor {
+  font: var(--text-body-md);
+  color: var(--color-muted);
+}
+
+.booking-price {
+  display: flex;
+  gap: var(--space-sm);
+  font: var(--text-body-md);
+}
+
+.booking-equipment {
+  color: var(--color-muted);
+}
+
+/* Bottom Navigation */
+.home-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--color-canvas);
+  border-top: 1px solid var(--color-hairline);
+  padding: var(--space-sm) var(--space-md);
+  padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom, 0));
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xxs);
+  padding: var(--space-xs);
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font: var(--text-caption);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.nav-tab.active {
+  color: var(--color-brand);
+}
+
+.nav-tab svg {
+  width: 24px;
+  height: 24px;
+}

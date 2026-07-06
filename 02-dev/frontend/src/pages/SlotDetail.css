@@ -1,0 +1,266 @@
+.slot-detail-page {
+  min-height: 100vh;
+  background: var(--color-surface-soft);
+}
+
+.slot-detail-header {
+  padding: var(--space-md);
+  background: var(--color-canvas);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font: var(--text-body-md);
+  color: var(--color-link);
+  cursor: pointer;
+  padding: var(--space-xs);
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.slot-detail-content {
+  padding: var(--space-md);
+  padding-bottom: 100px;
+}
+
+.slot-detail-loading, .slot-detail-error {
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.slot-detail-error p {
+  color: var(--color-muted);
+  margin-bottom: var(--space-md);
+}
+
+.slot-detail-card {
+  margin-bottom: var(--space-md);
+}
+
+.slot-detail-card h1 {
+  font: var(--text-title-lg);
+  margin: var(--space-sm) 0;
+}
+
+.slot-detail-zone {
+  margin-bottom: var(--space-sm);
+}
+
+.slot-detail-datetime {
+  font: var(--text-body-md);
+  color: var(--color-body);
+  margin-bottom: var(--space-xxs);
+}
+
+.slot-detail-duration {
+  font: var(--text-caption);
+  color: var(--color-muted);
+  margin-bottom: var(--space-md);
+}
+
+.slot-detail-instructor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.instructor-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--color-brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--text-title-md);
+}
+
+.instructor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.instructor-name {
+  font: var(--text-label-md);
+}
+
+.instructor-rating {
+  font: var(--text-caption);
+  color: var(--color-warning);
+}
+
+.slot-detail-places {
+  margin-top: var(--space-md);
+  font: var(--text-body-md);
+  color: var(--color-body);
+}
+
+/* Equipment */
+.equipment-card {
+  margin-bottom: var(--space-md);
+}
+
+.equipment-card h3 {
+  font: var(--text-title-sm);
+  margin-bottom: var(--space-md);
+}
+
+.equipment-options {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.equipment-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.equipment-option:hover {
+  border-color: var(--color-border-strong);
+}
+
+.equipment-option.selected {
+  border-color: var(--color-brand);
+  background: var(--color-brand-light);
+}
+
+.equipment-option input {
+  display: none;
+}
+
+.option-title {
+  font: var(--text-body-md);
+  flex: 1;
+}
+
+.option-price {
+  font: var(--text-label-md);
+  color: var(--color-ink);
+}
+
+.equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.equipment-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.equipment-item.selected {
+  border-color: var(--color-brand);
+  background: var(--color-brand-light);
+}
+
+.equipment-item input {
+  display: none;
+}
+
+.equipment-name {
+  flex: 1;
+  font: var(--text-body-md);
+}
+
+.equipment-price {
+  font: var(--text-label-md);
+}
+
+.equipment-available {
+  font: var(--text-caption);
+  color: var(--color-muted);
+}
+
+/* Footer */
+.slot-detail-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-canvas);
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-hairline);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0));
+}
+
+.total-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+  font: var(--text-title-sm);
+}
+
+.price-value {
+  font: var(--text-title-lg);
+  color: var(--color-ink);
+}
+
+/* Success */
+.booking-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: var(--color-success);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: var(--space-lg);
+}
+
+.booking-success h2 {
+  font: var(--text-title-lg);
+  margin-bottom: var(--space-xs);
+}
+
+.booking-success p {
+  color: var(--color-muted);
+}
+
+.success-price {
+  font: var(--text-title-lg);
+  color: var(--color-ink) !important;
+  margin: var(--space-md) 0;
+}
+
+.success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 300px;
+  margin-top: var(--space-lg);
+}

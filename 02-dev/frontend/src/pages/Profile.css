@@ -1,0 +1,121 @@
+.profile-page {
+  min-height: 100vh;
+  background: var(--color-surface-soft);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-canvas);
+}
+
+.profile-header h1 {
+  font: var(--text-title-md);
+  margin: 0;
+}
+
+.profile-content {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: var(--color-brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--text-display-md);
+  margin: 0 auto var(--space-lg);
+}
+
+.profile-field {
+  margin-bottom: var(--space-md);
+}
+
+.level-options {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.level-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.level-option.selected {
+  border-color: var(--color-brand);
+  background: var(--color-brand-light);
+}
+
+.level-option input {
+  display: none;
+}
+
+.profile-info {
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+  margin-bottom: var(--space-md);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-label {
+  font: var(--text-body-md);
+  color: var(--color-muted);
+}
+
+.info-value {
+  font: var(--text-body-md);
+}
+
+.logout-btn {
+  margin-top: var(--space-lg);
+}
+
+.profile-booking {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-hairline);
+  cursor: pointer;
+}
+
+.profile-booking:last-child {
+  border-bottom: none;
+}
+
+.profile-booking .booking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-booking .booking-date {
+  font: var(--text-body-md);
+}
+
+.profile-booking .booking-zone {
+  font: var(--text-body-sm);
+  color: var(--color-muted);
+}

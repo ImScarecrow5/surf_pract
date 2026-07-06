@@ -1,0 +1,74 @@
+.card {
+  background: var(--color-canvas);
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-clickable:active {
+  transform: translateY(0);
+}
+
+.card-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.card-default {
+  border: 1px solid var(--color-hairline);
+}
+
+.card-flat {
+  border: none;
+}
+
+.card-surface {
+  background: var(--color-surface-soft);
+}
+
+.card-dark {
+  background: var(--color-surface-dark);
+  color: var(--color-canvas);
+}
+
+.card-brand {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+.card-cream {
+  background: #f5e9d4;
+}
+
+/* Padding */
+.card-padding-xs { padding: var(--space-xs); }
+.card-padding-sm { padding: var(--space-sm); }
+.card-padding-md { padding: var(--space-md); }
+.card-padding-lg { padding: var(--space-lg); }
+.card-padding-xl { padding: var(--space-xl); }
+
+/* Card Parts */
+.card-header {
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-hairline);
+  margin-bottom: var(--space-sm);
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-footer {
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-hairline);
+  margin-top: var(--space-sm);
+}
