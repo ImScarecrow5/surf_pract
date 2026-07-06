@@ -73,8 +73,11 @@ func (h *Handler) VerifyCode(c *gin.Context) {
 		return
 	}
 
+	fmt.Printf("[VerifyCode] Phone: %s, Code: %s\n", req.Phone, req.Code)
+
 	result, err := services.VerifyCode(req.Phone, req.Code, &h.Config.JWT)
 	if err != nil {
+		fmt.Printf("[VerifyCode] Invalid code for phone %s: %v\n", req.Phone, err)
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			Error:   "invalid_code",
 			Message: err.Error(),
@@ -82,6 +85,7 @@ func (h *Handler) VerifyCode(c *gin.Context) {
 		return
 	}
 
+	fmt.Printf("[VerifyCode] Success for phone: %s\n", req.Phone)
 	c.JSON(http.StatusOK, result)
 }
 
@@ -627,14 +631,21 @@ func (h *Handler) GetBookingByID(c *gin.Context) {
 
 func (h *Handler) CancelBooking(c *gin.Context) {
 	clientID := c.GetInt("clientID")
-	bookingID := c.Param("id")
+	bookingIDStr := c.Param("id")
+	bookingID, err := strconv.Atoi(bookingIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{Error: "invalid_id", Message: "Неверный ID бронирования"})
+		return
+	}
+
+	fmt.Printf("[CancelBooking] clientID=%d, bookingID=%d\n", clientID, bookingID)
 
 	var slotID int
 	var bookingStatus string
 	var slotStartTime time.Time
 	var slotPrice float64
 
-	err := db.QueryRow(`
+	err = db.QueryRow(`
 		SELECT b.slot_id, b.status, s.start_time, s.price
 		FROM bookings b
 		JOIN slots s ON b.slot_id = s.id
@@ -642,20 +653,25 @@ func (h *Handler) CancelBooking(c *gin.Context) {
 	`, bookingID, clientID).Scan(&slotID, &bookingStatus, &slotStartTime, &slotPrice)
 
 	if err != nil {
+		fmt.Printf("[CancelBooking] Error finding booking: %v\n", err)
 		c.JSON(http.StatusNotFound, models.ErrorResponse{Error: "not_found", Message: "Бронирование не найдено"})
 		return
 	}
+
+	fmt.Printf("[CancelBooking] Found: slotID=%d, status=%s, startTime=%v, price=%f\n", slotID, bookingStatus, slotStartTime, slotPrice)
 
 	if bookingStatus != "confirmed" && bookingStatus != "pending" {
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{Error: "already_cancelled", Message: "Бронирование уже отменено"})
 		return
 	}
 
-	hoursUntilStart := time.Since(slotStartTime).Hours()
+	hoursUntilStart := time.Until(slotStartTime).Hours()
 	var newStatus string
 	var cancellationFee float64 = 0
 
-	if hoursUntilStart >= float64(-h.Config.Booking.FreeCancellationHours) {
+	fmt.Printf("[CancelBooking] hoursUntilStart=%f, freeHours=%d\n", hoursUntilStart, h.Config.Booking.FreeCancellationHours)
+
+	if hoursUntilStart >= float64(h.Config.Booking.FreeCancellationHours) {
 		newStatus = "cancelled_by_client_early"
 	} else {
 		newStatus = "cancelled_by_client_late"
@@ -669,11 +685,17 @@ func (h *Handler) CancelBooking(c *gin.Context) {
 	`, newStatus, cancellationFee, bookingID)
 
 	if err != nil {
+		fmt.Printf("[CancelBooking] Error updating booking: %v\n", err)
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{Error: "internal_error", Message: "Ошибка отмены"})
 		return
 	}
 
-	db.Exec("UPDATE slots SET free_places = free_places + 1 WHERE id = $1", slotID)
+	fmt.Printf("[CancelBooking] Updated successfully: newStatus=%s, fee=%f\n", newStatus, cancellationFee)
+
+	_, err = db.Exec("UPDATE slots SET free_places = free_places + 1 WHERE id = $1", slotID)
+	if err != nil {
+		fmt.Printf("[CancelBooking] Error updating slot places: %v\n", err)
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"id":                   bookingID,
